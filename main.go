@@ -17,9 +17,12 @@ func main() {
 	lruCache.Set(3, "world")
 	lruCache.Set(4, "world")
 	lruCache.Set(5, "world")
-	fmt.Println(lruCache.Hashmap)
-	fmt.Println(lruCache.DoublyLinkedList.Front().Value)
-	fmt.Println(lruCache.DoublyLinkedList.Back().Value)
+
+	
+	fmt.Println(lruCache.Get(2))
+
+	fmt.Println(lruCache.Get(5))
+
 	for i := lruCache.DoublyLinkedList.Front(); i != nil; i = i.Next() {
 		fmt.Print(i.Value)
 	}
