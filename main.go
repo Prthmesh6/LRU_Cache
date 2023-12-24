@@ -1,15 +1,19 @@
 package main
 
 import (
-	Cache "LRU_cache/Cache/LRU"
 	"fmt"
+
+	Cache "github.com/Prthmesh6/lru_cache/Cache/LRU"
 )
 
 func main() {
-	lruCache := Cache.New[int, string](2)
+	//initialise LRU cache by providing key-value data types and maxcapacity
+	maxCapacity := 2
+	lruCache := Cache.New[int, string](maxCapacity)
+
+	//You can also get lruCache like below,
 	// lruCache := new(lru.LRU[int, string])
 	// lruCache2 := new(lru.LRU[string, string])
-
 	// lruCache2.Set("Hello", "world")
 
 	lruCache.Set(1, "Hello")
@@ -18,13 +22,14 @@ func main() {
 	lruCache.Set(4, "world")
 	lruCache.Set(5, "world")
 
-	
+	//This will be handled gracefully as 2 is not a present key, it is overwritten by 5
 	fmt.Println(lruCache.Get(2))
 
-	fmt.Println(lruCache.Get(5))
-
-	for i := lruCache.DoublyLinkedList.Front(); i != nil; i = i.Next() {
-		fmt.Print(i.Value)
+	// key 5 have value as "world" so it will be returned
+	value, err := lruCache.Get(5)
+	if err != nil {
+		fmt.Println("Eror occured while getting value :- ", err)
 	}
+	fmt.Println(value)
 
 }
