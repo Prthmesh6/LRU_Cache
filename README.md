@@ -11,6 +11,10 @@ An LRU Cache is a data structure that maintains a limited number of items, disca
 - **LRU Cache:** Implements a generic LRU Cache that stores key-value pairs.
 - **Golang with Generics:** Utilizes the power of generics in Golang to create a versatile and type-safe cache.
 
+### Documentation
+
+- [Go Generics](https://go.dev/blog/intro-generics)
+
 ## Advantages of Using Generics in Golang for LRU Cache Implementation
 
 ### 1. Type Safety and Reusability
