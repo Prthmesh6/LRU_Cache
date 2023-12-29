@@ -2,6 +2,7 @@ package Cache
 
 import (
 	"container/list"
+	"context"
 	"fmt"
 	"sync"
 )
@@ -13,7 +14,7 @@ type lru[T1 comparable, T2 comparable] struct {
 	mutex            sync.Mutex
 }
 
-func New[T1 comparable, T2 comparable](capacity int) *lru[T1, T2] {
+func NewLruCache[T1 comparable, T2 comparable](ctx context.Context, capacity int) *lru[T1, T2] {
 	hashmap := make(map[T1]*list.Element)
 	return &lru[T1, T2]{
 		capacity:         capacity,
@@ -28,7 +29,7 @@ type InsertNode[T1 comparable, T2 comparable] struct {
 	val T2
 }
 
-func (l *lru[T1, T2]) Set(key T1, element T2) {
+func (l *lru[T1, T2]) Set(ctx context.Context, key T1, element T2) error {
 	l.mutex.Lock()
 	defer l.mutex.Unlock()
 
@@ -47,12 +48,15 @@ func (l *lru[T1, T2]) Set(key T1, element T2) {
 			if ok {
 				keyToDelete := removedElement1.key
 				delete(l.hashmap, keyToDelete)
+			} else {
+				return fmt.Errorf("errKeyNotAdded")
 			}
 		}
 	}
+	return nil
 }
 
-func (l *lru[T1, T2]) Get(element T1) (result T2, err error) {
+func (l *lru[T1, T2]) Get(ctx context.Context, element T1) (result T2, err error) {
 	l.mutex.Lock()
 	defer l.mutex.Unlock()
 	val, ok := (l.hashmap)[element]
@@ -66,8 +70,8 @@ func (l *lru[T1, T2]) Get(element T1) (result T2, err error) {
 	return ans.Value.(*InsertNode[T1, T2]).val, nil
 }
 
-func (l *lru[T1, T2]) GetCapacity() int {
-	return l.capacity
+func (l *lru[T1, T2]) GetCapacity() (int, error) {
+	return l.capacity, nil
 }
 
 func getInsertNode[T1 comparable, T2 comparable](key T1, value T2) *InsertNode[T1, T2] {

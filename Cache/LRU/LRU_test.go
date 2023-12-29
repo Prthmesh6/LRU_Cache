@@ -1,14 +1,19 @@
 package Cache
 
 import (
+	"context"
+	"fmt"
 	"testing"
 )
 
-var lrucache = New[int, string](2)
-var lrucache2 = New[int, int](5)
+var lrucache = NewLruCache[int, string](context.TODO(), 2)
+var lrucache2 = NewLruCache[int, int](context.TODO(), 5)
 
 func TestNew(t *testing.T) {
-	cap := lrucache.GetCapacity()
+	cap, err := lrucache.GetCapacity()
+	if err != nil {
+		fmt.Print(err)
+	}
 	if cap != 2 {
 		t.Errorf("FAILED,error in getCapacity expected 2 got %v", cap)
 	} else {
@@ -17,8 +22,8 @@ func TestNew(t *testing.T) {
 }
 
 func TestSet(t *testing.T) {
-	lrucache.Set(4, "four")
-	getValue, err := lrucache.Get(4)
+	lrucache.Set(context.TODO(), 4, "four")
+	getValue, err := lrucache.Get(context.TODO(), 4)
 	if err != nil {
 		t.Errorf("Failed,error in GetValue method %v", err)
 	} else if getValue != "four" {
@@ -27,12 +32,12 @@ func TestSet(t *testing.T) {
 		t.Logf("Successfull expected four got %v", getValue)
 	}
 
-	lrucache.Set(5, "five")
-	lrucache.Set(6, "six")
-	lrucache.Set(7, "seven")
-	lrucache.Set(8, "eight")
-	lrucache.Set(8, "eight")
-	getValue1, err := lrucache.Get(4)
+	lrucache.Set(context.TODO(), 5, "five")
+	lrucache.Set(context.TODO(), 6, "six")
+	lrucache.Set(context.TODO(), 7, "seven")
+	lrucache.Set(context.TODO(), 8, "eight")
+	lrucache.Set(context.TODO(), 8, "eight")
+	getValue1, err := lrucache.Get(context.TODO(), 4)
 	if err != nil && getValue1 == "" {
 		t.Logf("Successfull,error in GetValue method caught %v", err)
 	} else {
@@ -41,8 +46,8 @@ func TestSet(t *testing.T) {
 
 	//multiple insertions simeltenously
 	for i := 0; i < 5; i++ {
-		go lrucache2.Set(i, i+i)
-		go lrucache.Get(i)
+		go lrucache2.Set(context.TODO(), i, i+i)
+		go lrucache.Get(context.TODO(), i)
 	}
 }
 
