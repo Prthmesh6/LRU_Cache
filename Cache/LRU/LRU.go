@@ -61,12 +61,12 @@ func (l *lru[T1, T2]) Get(element T1) (result T2, err error) {
 	}
 	ans := (l.hashmap)[element]
 	if ans == nil {
-		return result, fmt.Errorf("key %v is not present in cache", element)
+		return result, fmt.Errorf("errKeyNotAvailable %v", element)
 	}
 	return ans.Value.(*InsertNode[T1, T2]).val, nil
 }
 
-func (l lru[T1, T2]) GetCapacity() int {
+func (l *lru[T1, T2]) GetCapacity() int {
 	return l.capacity
 }
 

@@ -11,11 +11,14 @@ func main() {
 	maxCapacity := 2
 	lruCache := Cache.New[int, string](maxCapacity)
 
-	//You can also get lruCache like below,
-	// lruCache := new(lru.LRU[int, string])
-	// lruCache2 := new(lru.LRU[string, string])
-	// lruCache2.Set("Hello", "world")
+	//You can also get lruCache like below, you just need to define the
+	//data types for key and value, so that particular object of lrucache
+	//will accept only those data types. Example :-
+	//lruCache := new(lru.LRU[int, string])
+	//lruCache2 := new(lru.LRU[string, string])
+	//lruCache2.Set("Hello", "world")
 
+	//adding the value string for key int
 	lruCache.Set(1, "Hello")
 	lruCache.Set(2, "world")
 	lruCache.Set(3, "world")
