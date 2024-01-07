@@ -10,7 +10,7 @@ var lrucache = NewLruCache[int, string](context.TODO(), 2)
 var lrucache2 = NewLruCache[int, int](context.TODO(), 5)
 
 func TestNew(t *testing.T) {
-	cap, err := lrucache.GetCapacity()
+	cap, err := lrucache.GetCapacity(context.TODO())
 	if err != nil {
 		fmt.Print(err)
 	}

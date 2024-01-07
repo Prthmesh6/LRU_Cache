@@ -70,7 +70,7 @@ func (l *lru[T1, T2]) Get(ctx context.Context, element T1) (result T2, err error
 	return ans.Value.(*InsertNode[T1, T2]).val, nil
 }
 
-func (l *lru[T1, T2]) GetCapacity() (int, error) {
+func (l *lru[T1, T2]) GetCapacity(ctx context.Context) (int, error) {
 	return l.capacity, nil
 }
 
